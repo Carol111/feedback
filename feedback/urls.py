@@ -17,8 +17,12 @@ from django.contrib import admin
 from django.urls import path
 
 from apps.core.views import home
+from apps.core.api import api_classifier
 
 urlpatterns = [
     path('', home, name='home'),
     path('admin/', admin.site.urls),
+
+    #API
+    path('api/api_classifier/', api_classifier, name='api_classifier'),
 ]

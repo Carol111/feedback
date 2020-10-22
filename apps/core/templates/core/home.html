@@ -1,15 +1,16 @@
 {% extends "core/base.html" %}
 {% block content %}
 <div id="home">
-    <p>Deixe seu Feedback aqui</p>
+    <p>Deixe seu feedback aqui</p>
 
-    <form>
+    <form v-on:submit.prevent="onSubmit">
         <input v-model="courseCode" placeholder="Insira o código da disciplina">
         <br>
         <input v-model="comment" placeholder="Deixe a sua mensagem anonimamente...">
+        <br>
+        <button @click="clearComment">Limpar</button>
+        <button @click="submitComment">Enviar</button>
     </form>
-    <button @click="clearComment()">Limpar</button>
-    <button @click="submitComment()">Enviar</button>
 </div>
 {% endblock %}
 
@@ -25,11 +26,45 @@
             }
         },
         methods: {
+            onSubmit () {
+                this.comment = '';
+                this.courseCode = '';
+            },
             submitComment() {
                 console.log(this.comment);
+
+                var data = {
+                    'comment': [this.comment],
+                    'courseCode': this.courseCode
+                };
+
+                fetch('/api/api_classifier/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify(data)
+                })
+                .then((response) => {
+                    console.log(response);
+
+                    // this.showMessage = true
+
+                    // store.commit('increment', 1);
+
+                    // setTimeout(() => {
+                    //     this.showMessage = false
+                    // }, 2000)
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
             },
             clearComment() {
-                console.log(this.courseCode);
+                this.comment = '';
+                this.courseCode = '';
             }
         }
     });
