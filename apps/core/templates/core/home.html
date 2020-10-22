@@ -1,0 +1,37 @@
+{% extends "core/base.html" %}
+{% block content %}
+<div id="home">
+    <p>Deixe seu Feedback aqui</p>
+
+    <form>
+        <input v-model="courseCode" placeholder="Insira o código da disciplina">
+        <br>
+        <input v-model="comment" placeholder="Deixe a sua mensagem anonimamente...">
+    </form>
+    <button @click="clearComment()">Limpar</button>
+    <button @click="submitComment()">Enviar</button>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    var home = new Vue({
+        el: '#home',
+        delimiters: ['[[', ']]'],
+        data () {
+            return {
+                courseCode: '',
+                comment: ''
+            }
+        },
+        methods: {
+            submitComment() {
+                console.log(this.comment);
+            },
+            clearComment() {
+                console.log(this.courseCode);
+            }
+        }
+    });
+</script>
+{% endblock %}

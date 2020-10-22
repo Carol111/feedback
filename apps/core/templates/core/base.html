@@ -1,0 +1,27 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Feedback</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div class="header">
+        <p>Feedback logo</p>
+        <p>Sobre</p>
+        <p>Entrar</p>
+        <p>Registrar</p>
+    </div>
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+    {% block scripts %}
+	{% endblock %}
+</body>
+</html>
