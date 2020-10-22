@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from .models import Comment
+from datetime import date
 
 import pickle
 
@@ -10,5 +12,12 @@ def classifier(courseCode, comment):
     vectorizer = pickle.load(open('classifier/vectorizer.sav','rb'))
 
     processed_comment = vectorizer.transform(comment)
-    comment_class = classifier_multi_NB.predict(processed_comment)
+    comment_rating = classifier_multi_NB.predict(processed_comment)
+
+    new_comment = Comment(
+        text = comment[0],
+        rating = comment_rating[0]
+    )
+
+    new_comment.save()
     return
