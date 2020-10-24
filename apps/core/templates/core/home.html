@@ -5,12 +5,20 @@
 
     <form v-on:submit.prevent="onSubmit">
         <input v-model="courseCode" placeholder="Insira o código da disciplina">
+        <p v-if="errors.courseCode">
+            [[errors.courseCode]]
+        </p>
         <br>
         <input v-model="comment" placeholder="Deixe a sua mensagem anonimamente...">
+        <p v-if="errors.comment">
+            [[errors.comment]]
+        </p>
         <br>
         <button @click="clearComment">Limpar</button>
         <button @click="submitComment">Enviar</button>
     </form>
+    <br>
+    <p>Ferramenta de código aberto. Visite-nos no <a href="https://github.com/Carol111/feedback" target="_blank">GitHub</a>.</p>
 </div>
 {% endblock %}
 
@@ -21,48 +29,61 @@
         delimiters: ['[[', ']]'],
         data () {
             return {
+                errors: {
+                    courseCode: '',
+                    comment: ''
+                },
                 courseCode: '',
                 comment: ''
             }
         },
         methods: {
             onSubmit () {
-                this.comment = '';
-                this.courseCode = '';
+                if (!this.errors.courseCode && !this.errors.comment) {
+                    this.comment = '';
+                    this.courseCode = '';
+                }
             },
             submitComment() {
-                console.log(this.comment);
+                if (this.comment && this.courseCode) {
+                    var data = {
+                        'comment': [this.comment],
+                        'courseCode': this.courseCode
+                    };
 
-                var data = {
-                    'comment': [this.comment],
-                    'courseCode': this.courseCode
-                };
+                    fetch('/api/api_classifier/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        credentials: 'same-origin',
+                        body: JSON.stringify(data)
+                    })
+                    .then((response) => {
+                    })
+                    .catch(function (error) {
+                    })
+                } else {
+                    this.errors = {
+                        courseCode: '',
+                        comment: ''
+                    };
 
-                fetch('/api/api_classifier/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    },
-                    credentials: 'same-origin',
-                    body: JSON.stringify(data)
-                })
-                .then((response) => {
-                    console.log(response);
-
-                    // this.showMessage = true
-
-                    // store.commit('increment', 1);
-
-                    // setTimeout(() => {
-                    //     this.showMessage = false
-                    // }, 2000)
-                })
-                .catch(function (error) {
-                    console.log(error);
-                })
+                    if (!this.comment) {
+                        this.errors.comment = 'A mensagem é obrigatória.';
+                    }
+                    if (!this.courseCode) {
+                        this.errors.courseCode = 'O código da disciplina é obrigatório.';
+                    }
+                }
             },
             clearComment() {
+                this.errors = {
+                        courseCode: '',
+                        comment: ''
+                    };
+
                 this.comment = '';
                 this.courseCode = '';
             }
