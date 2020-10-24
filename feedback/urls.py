@@ -15,13 +15,25 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.contrib.auth import views
 
 from apps.core.views import home
+from apps.userprofile.views import register, settings
+
 from apps.core.api import api_classifier
 
 urlpatterns = [
+    #FRONTPAGE
     path('', home, name='home'),
     path('admin/', admin.site.urls),
+
+    # LOGGED AREA
+    path('settings/', settings, name='settings'),
+
+    # AUTH
+    path('register/', register, name='register'),
+    path('login/', views.LoginView.as_view(template_name='userprofile/login.html'), name='login'),
+    path('logout/', views.LogoutView.as_view(), name='logout'),
 
     #API
     path('api/api_classifier/', api_classifier, name='api_classifier'),

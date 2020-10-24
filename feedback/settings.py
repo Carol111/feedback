@@ -30,6 +30,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['feedback-web.herokuapp.com']
 
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'settings'
+LOGOUT_REDIRECT_URL = 'home'
 
 # Application definition
 
@@ -40,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.core'
+    'apps.core',
+    'apps.userprofile'
 ]
 
 MIDDLEWARE = [
