@@ -1,0 +1,16 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <p class="title">Configurações</p>
+
+    <a href="{% url 'logout' %}">Sair</a>
+
+    <br><br>
+
+    <p class="subtitle">Dados pessoais</p>
+
+    <p><strong>Nome de usuário: </strong>{{ request.user.username }}</p>
+    <p><strong>E-mail: </strong>{{ request.user.email }}</p>
+
+    <br><br>
+{% endblock %}
