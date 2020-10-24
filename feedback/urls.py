@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views
 
-from apps.core.views import home
+from apps.core.views import home, about
 from apps.userprofile.views import register, settings
 
 from apps.core.api import api_classifier
@@ -25,6 +25,7 @@ from apps.core.api import api_classifier
 urlpatterns = [
     #FRONTPAGE
     path('', home, name='home'),
+    path('about/', about, name='about'),
     path('admin/', admin.site.urls),
 
     # LOGGED AREA

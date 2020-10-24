@@ -7,6 +7,9 @@ import pickle
 def home(request):
     return render(request, 'core/home.html')
 
+def about(request):
+    return render(request, 'core/about.html')
+
 def classifier(courseCode, comment):
     classifier_multi_NB = pickle.load(open('classifier/classifier_multi_NB.sav','rb'))
     vectorizer = pickle.load(open('classifier/vectorizer.sav','rb'))
