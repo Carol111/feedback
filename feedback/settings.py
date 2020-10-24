@@ -129,6 +129,6 @@ STATIC_URL = '/static'
 
 DISABLE_COLLECTSTATIC=1
 
-STATICFILES_DIRS = '/staticfiles'
+STATICFILES_DIRS = ['/staticfiles']
 
 django_heroku.settings(locals())
