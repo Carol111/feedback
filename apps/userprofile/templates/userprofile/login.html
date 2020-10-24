@@ -1,0 +1,15 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<p>Insira seus dados</p>
+
+<form method="post" action=".">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button>Entrar</button>
+</form>
+
+<p>Esqueceu a senha?</p>
+{% endblock %}
