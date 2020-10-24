@@ -1,0 +1,32 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Feedback</title>
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div class="content">
+        <h1>Feedback</h1>
+        <p>A visão do aluno sobre a sua aula</p>
+        <br><br>
+        <a href="{% url 'settings' %}">Visão Geral</a>
+        <a href="{% url 'settings' %}">Disciplinas</a>
+        <a href="{% url 'settings' %}">Períodos</a>
+        <a href="{% url 'settings' %}">Configurações</a>
+        <a href="https://github.com/Carol111/feedback" target="_blank">GitHub</a>
+        <br>
+        <a href="{% url 'logout' %}">Sair</a>
+        {% block content %}
+        {% endblock %}
+    </div>
+    {% block scripts %}
+	{% endblock %}
+</body>
+</html>
