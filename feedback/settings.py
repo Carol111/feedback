@@ -26,9 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG') == 'True'
 
-ALLOWED_HOSTS = ['feedback-web.herokuapp.com']
+ALLOWED_HOSTS = ['feedback-web.herokuapp.com', 'localhost']
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'settings'
@@ -62,7 +62,7 @@ ROOT_URLCONF = 'feedback.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -128,9 +128,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 DISABLE_COLLECTSTATIC=1
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
 
 django_heroku.settings(locals())

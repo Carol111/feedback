@@ -12,17 +12,17 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 <body>
-    <div class="header">
-        <a href="{% url 'home' %}">Feedback</a>
-        <a href="{% url 'about' %}">Sobre</a>
-        {% if request.user.is_authenticated %}
-            <a href="{% url 'settings' %}">Área do Professor</a>
-        {% else %}
-            <a href="{% url 'login' %}">Entrar</a>
-            <a href="{% url 'register' %}">Registrar</a>
-        {% endif %}
-    </div>
     <div class="content">
+        <h1>Feedback</h1>
+        <p>A visão do aluno sobre a sua aula</p>
+        <br><br>
+        <a href="{% url 'settings' %}">Visão Geral</a>
+        <a href="{% url 'settings' %}">Disciplinas</a>
+        <a href="{% url 'settings' %}">Períodos</a>
+        <a href="{% url 'settings' %}">Configurações</a>
+        <a href="https://github.com/Carol111/feedback" target="_blank">GitHub</a>
+        <br>
+        <a href="{% url 'logout' %}">Sair</a>
         {% block content %}
         {% endblock %}
     </div>
