@@ -35,6 +35,7 @@ urlpatterns = [
     path('register/', register, name='register'),
     path('login/', views.LoginView.as_view(template_name='userprofile/login.html'), name='login'),
     path('logout/', views.LogoutView.as_view(), name='logout'),
+    path('password_reset/', views.PasswordResetView.as_view(), name='password_reset'),
 
     #API
     path('api/api_classifier/', api_classifier, name='api_classifier'),
