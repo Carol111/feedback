@@ -3,10 +3,13 @@
 {% block content %}
     <p class="title"><b>Configurações</b></p>
 
-    <p class="subtitle">Dados pessoais</p>
+    <p class="title">Altere seus dados</p>
 
-    <p><strong>Nome de usuário: </strong>{{ request.user.username }}</p>
-    <p><strong>E-mail: </strong>{{ request.user.email }}</p>
+    <form method="POST" action=".">
+        {% csrf_token %}
 
-    <br><br>
+        {{ form.as_p }}
+
+        <button>Alterar dados</button>
+    </form>
 {% endblock %}
