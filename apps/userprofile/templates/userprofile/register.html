@@ -3,7 +3,7 @@
 {% block content %}
 <p>Faça seu Cadastro</p>
 
-<form method="post" action=".">
+<form method="POST" action=".">
     {% csrf_token %}
 
     {{ form.as_p }}

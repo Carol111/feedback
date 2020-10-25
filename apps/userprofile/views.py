@@ -13,11 +13,21 @@ def register(request):
             login(request, user)
 
             return redirect('home')
-    else:
-        form = RegisterForm()
+        else:
+            form = RegisterForm()
 
     return render(request, 'userprofile/register.html', {'form': form})
 
 @login_required
 def settings(request):
-    return render(request, 'userprofile/settings.html')
+    if request.method == 'POST':
+        form = RegisterForm(request.POST, instance = request.user)
+        if form.is_valid():
+            form.save()
+
+            return redirect('settings')
+    else:
+        form = RegisterForm()
+
+    return render(request, 'userprofile/settings.html', {'form': form})
+
