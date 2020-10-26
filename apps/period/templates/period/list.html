@@ -1,0 +1,7 @@
+{% extends 'period/base.html' %}
+
+{% block sub_content %}
+    {% for period in periods %}
+        <p>{{period}}</p>
+	{% endfor %}
+{% endblock %}

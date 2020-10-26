@@ -19,6 +19,7 @@ from django.contrib.auth import views
 
 from apps.core.views import home, about
 from apps.userprofile.views import register, settings
+from apps.period.views import add_period, list_period
 
 from apps.core.api import api_classifier
 
@@ -30,6 +31,8 @@ urlpatterns = [
 
     # LOGGED AREA
     path('settings/', settings, name='settings'),
+    path('period/add', add_period, name='add_period'),
+    path('period/list', list_period, name='list_period'),
 
     # AUTH
     path('register/', register, name='register'),
