@@ -1,0 +1,11 @@
+{% extends 'core/loggedArea.html' %}
+
+{% block content %}
+    <p class="title"><b>Períodos</b></p>
+
+    <a href="{% url 'list_period' %}">Listar</a>
+    <a href="{% url 'add_period' %}">Adicionar</a>
+
+    {% block sub_content %}
+    {% endblock %}
+{% endblock %}
