@@ -1,0 +1,11 @@
+{% extends 'period/base.html' %}
+
+{% block sub_content %}
+    <form method="POST" action="add">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button>Criar</button>
+    </form>
+{% endblock %}

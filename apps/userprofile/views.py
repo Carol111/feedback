@@ -30,4 +30,3 @@ def settings(request):
         form = RegisterForm()
 
     return render(request, 'userprofile/settings.html', {'form': form})
-
