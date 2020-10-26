@@ -1,0 +1,7 @@
+{% extends 'course/base.html' %}
+
+{% block sub_content %}
+    {% for course in courses %}
+        <p>{{course}}</p>
+	{% endfor %}
+{% endblock %}

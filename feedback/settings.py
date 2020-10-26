@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'apps.core',
     'apps.userprofile',
     'apps.period',
+    'apps.course',
 ]
 
 MIDDLEWARE = [

@@ -13,8 +13,8 @@ def register(request):
             login(request, user)
 
             return redirect('home')
-        else:
-            form = RegisterForm()
+
+    form = RegisterForm()
 
     return render(request, 'userprofile/register.html', {'form': form})
 

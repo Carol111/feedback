@@ -20,6 +20,7 @@ from django.contrib.auth import views
 from apps.core.views import home, about
 from apps.userprofile.views import register, settings
 from apps.period.views import add_period, list_period
+from apps.course.views import add_course, list_course
 
 from apps.core.api import api_classifier
 
@@ -33,6 +34,8 @@ urlpatterns = [
     path('settings/', settings, name='settings'),
     path('period/add', add_period, name='add_period'),
     path('period/list', list_period, name='list_period'),
+    path('course/add', add_course, name='add_course'),
+    path('course/list', list_course, name='list_course'),
 
     # AUTH
     path('register/', register, name='register'),
