@@ -22,8 +22,6 @@ from apps.userprofile.views import register, settings
 from apps.period.views import add_period, list_period
 from apps.course.views import add_course, list_course
 
-from apps.core.api import api_classifier
-
 urlpatterns = [
     #FRONTPAGE
     path('', home, name='home'),
@@ -45,7 +43,4 @@ urlpatterns = [
     path('password_reset/done/', views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
-
-    #API
-    path('api/api_classifier/', api_classifier, name='api_classifier'),
 ]
