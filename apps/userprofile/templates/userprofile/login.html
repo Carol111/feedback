@@ -7,7 +7,7 @@
     <form method="POST" action=".">
         {% csrf_token %}
         <div class="username">
-            <input type="text" class="input" name="username" placeholder="Nome de usuário" autocomplete="username" maxlength="150" required id="id_username">
+            <input type="text" class="input" name="username" placeholder="Nome de usuário" autofocus autocomplete="username" maxlength="150" required id="id_username">
         </div>
         <div class="password">
             <input type="password" class="input" name="password" placeholder="Senha" autocomplete="current-password" required id="id_password">

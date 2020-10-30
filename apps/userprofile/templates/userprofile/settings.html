@@ -1,15 +1,60 @@
 {% extends 'core/loggedArea.html' %}
 
 {% block content %}
+<div id="settings">
     <p class="title"><b>Configurações</b></p>
 
     <p class="title">Altere seus dados</p>
 
     <form method="POST" action=".">
         {% csrf_token %}
-
-        {{ form.as_p }}
-
-        <button>Alterar dados</button>
+        <div class="username" v-bind:class="{ error: errors.username }">
+            <input type="text" class="input" name="username" v-model="username" placeholder="Usuário" maxlength="150" autofocus required id="id_username" title="Insira penas letras ou números.">
+        </div>
+        <div class="email" v-bind:class="{ error: errors.email }">
+            <input type="email" class="input" name="email" v-model="email" placeholder="Email" maxlength="255" required id="id_email" title="Insira um email válido.">
+        </div>
+        <div class="password" v-bind:class="{ error: errors.password }">
+            <input type="password" class="input" name="password1" placeholder="Senha" autocomplete="new-password" required id="id_password1" aria-autocomplete="list" title="Mínimo de 8 caracteres. Evitar padrões comuns e semelhança com os demais campos.">
+        </div>
+        <div class="password" v-bind:class="{ error: errors.password }">
+            <input type="password" class="input" name="password2" placeholder="Confirme a senha" autocomplete="new-password" required id="id_password2" title="As senhas devem ser iguais.">
+        </div>
+        <br>
+        <button type="submit" class="primary-button">Alterar dados</button>
     </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    var home = new Vue({
+        el: '#settings',
+        delimiters: ['[[', ']]'],
+        data () {
+            return {
+                username: '{{ form.username.value }}',
+                email: '{{ form.email.value }}',
+                errors: {
+                    form: '{{ form.errors }}',
+                    username: false,
+                    email: false,
+                    password: false
+                }
+            }
+        },
+        mounted() {
+            console.log(this.errors)
+            if (this.errors.form.includes('<li>username')) {
+                this.errors.username = true
+            }
+            if (this.errors.form.includes('<li>email')) {
+                this.errors.email = true
+            }
+            if (this.errors.form.includes('<li>password')) {
+                this.errors.password = true
+            }
+        }
+    });
+</script>
 {% endblock %}
