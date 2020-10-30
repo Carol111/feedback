@@ -1,16 +1,61 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-<p>Insira seus dados</p>
+<div id="login">
+    <p>Insira seus dados</p>
 
-<form method="POST" action=".">
-    {% csrf_token %}
+    <form method="POST" action=".">
+        {% csrf_token %}
+        <div class="username">
+            <input type="text" class="input" name="username" placeholder="Nome de usuário" autocomplete="username" maxlength="150" required id="id_username">
+        </div>
+        <div class="password">
+            <input type="password" class="input" name="password" placeholder="Senha" autocomplete="current-password" required id="id_password">
+        </div>
+        <br>
+        <button type="submit" class="primary-button">Entrar</button>
 
-    {{ form.as_p }}
+    </form>
 
-    <button>Entrar</button>
-</form>
+    <transition name="toast">
+        <div v-bind:class="toast.class" v-if="toast.show">
+            <span>Icon</span>
+            <p>[[toast.title]]</p>
+            <p>[[toast.message]]</p>
+            <button @click="toast.show = false">Fechar</button>
+        </div>
+    </transition>
 
-<br>
-<a href="{% url 'password_reset' %}">Esqueceu a senha?</a>
+    <br>
+    <a href="{% url 'password_reset' %}">Esqueceu a senha?</a>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    var home = new Vue({
+        el: '#login',
+        delimiters: ['[[', ']]'],
+        data () {
+            return {
+                errors: '{{ form.errors }}',
+                toast: {
+                    class: '',
+                    title: '',
+                    message: '',
+                    show: false,
+                }
+            }
+        },
+        mounted() {
+            if (this.errors) {
+                this.toast.class = 'toast-error';
+                this.toast.title = 'Erro';
+                this.toast.message = "Nome de usuário ou senha inválido.";
+
+                this.toast.show = true;
+            }
+        }
+    });
+</script>
 {% endblock %}
