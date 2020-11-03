@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
 from .models import Course
-from ..period.models import Period
 from .forms import CourseForm
 
 @login_required
@@ -13,15 +12,19 @@ def list_course(request):
 
 @login_required
 def add_course(request):
+    form = CourseForm()
+
     if request.method == 'POST':
         form = CourseForm(request.POST)
 
         if form.is_valid():
-            form.save()
+            new_course = Course(
+                user=request.user,
+                title = form.data['title'],
+                code = form.data['code'],
+            )
+            new_course.save()
 
             return redirect('add_course')
-
-    form = CourseForm()
-    form.fields['period'].queryset = Period.objects.filter(user=request.user).order_by('title')
 
     return render(request, 'course/add.html', {'form':form})
