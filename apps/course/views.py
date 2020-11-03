@@ -6,7 +6,7 @@ from .forms import CourseForm
 
 @login_required
 def list_course(request):
-	courses = Course.objects.filter(period__user=request.user).order_by('title')
+	courses = Course.objects.filter(user=request.user).order_by('title')
 
 	return render(request, 'course/list.html', {'courses':courses})
 
@@ -16,6 +16,7 @@ def add_course(request):
 
     if request.method == 'POST':
         form = CourseForm(request.POST)
+        print (form)
 
         if form.is_valid():
             new_course = Course(
