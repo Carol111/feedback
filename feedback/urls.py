@@ -20,8 +20,7 @@ from django.contrib.auth import views
 from apps.core.views import home, about
 from apps.userprofile.views import register, settings
 from apps.period.views import add_period, list_period
-
-from apps.core.api import api_classifier
+from apps.course.views import add_course, list_course
 
 urlpatterns = [
     #FRONTPAGE
@@ -33,6 +32,8 @@ urlpatterns = [
     path('settings/', settings, name='settings'),
     path('period/add', add_period, name='add_period'),
     path('period/list', list_period, name='list_period'),
+    path('course/add', add_course, name='add_course'),
+    path('course/list', list_course, name='list_course'),
 
     # AUTH
     path('register/', register, name='register'),
@@ -42,7 +43,4 @@ urlpatterns = [
     path('password_reset/done/', views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
-
-    #API
-    path('api/api_classifier/', api_classifier, name='api_classifier'),
 ]

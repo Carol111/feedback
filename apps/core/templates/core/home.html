@@ -3,21 +3,29 @@
 <div id="home">
     <p>Deixe seu feedback aqui</p>
 
-    <form v-on:submit.prevent="onSubmit">
-        <input v-model="courseCode" placeholder="Insira o código da disciplina">
-        <p v-if="errors.courseCode">
-            [[errors.courseCode]]
-        </p>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <div class="course-code">
+            <input type="text" class="input" name="course" id="id_course" v-model="course" autofocus placeholder="Insira o código da disciplina" required>
+        </div>
+        <div class="comment">
+            <input type="text" class="input" name="text" id="id_text" v-model="text" placeholder="Deixe a sua mensagem anonimamente..." maxlength="200" required>
+        </div>
+        <span class="limiter">[[charactersLeft]]</span>
         <br>
-        <input v-model="comment" placeholder="Deixe a sua mensagem anonimamente...">
-        <p v-if="errors.comment">
-            [[errors.comment]]
-        </p>
-        <br>
-        <button @click="clearComment">Limpar</button>
-        <button @click="submitComment">Enviar</button>
+        <button type="reset" class="secondary-button">Limpar</button>
+        <button type="submit" class="primary-button">Enviar</button>
     </form>
-    <br>
+
+    <transition name="toast">
+        <div v-bind:class="toast.class" v-if="toast.show">
+            <span>Icon</span>
+            <p>[[toast.title]]</p>
+            <p>[[toast.message]]</p>
+            <button @click="toast.show = false">Fechar</button>
+        </div>
+    </transition>
+
     <p>Ferramenta de código aberto. Visite-nos no <a href="https://github.com/Carol111/feedback" target="_blank">GitHub</a>.</p>
 </div>
 {% endblock %}
@@ -29,63 +37,42 @@
         delimiters: ['[[', ']]'],
         data () {
             return {
-                errors: {
-                    courseCode: '',
-                    comment: ''
-                },
-                courseCode: '',
-                comment: ''
+                course: '{{ form.course.value }}',
+                text: '{{ form.text.value }}',
+                submitStatus: '{{ success }}',
+                errors: '{{ form.errors }}',
+                toast: {
+                    class: '',
+                    title: '',
+                    message: '',
+                    show: false,
+                }
             }
         },
-        methods: {
-            onSubmit () {
-                if (!this.errors.courseCode && !this.errors.comment) {
-                    this.comment = '';
-                    this.courseCode = '';
-                }
-            },
-            submitComment() {
-                if (this.comment && this.courseCode) {
-                    var data = {
-                        'comment': [this.comment],
-                        'courseCode': this.courseCode
-                    };
-
-                    fetch('/api/api_classifier/', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRFToken': '{{ csrf_token }}'
-                        },
-                        credentials: 'same-origin',
-                        body: JSON.stringify(data)
-                    })
-                    .then((response) => {
-                    })
-                    .catch(function (error) {
-                    })
+        mounted() {
+            if (this.course && this.text) {
+                if (this.submitStatus == 'True') {
+                    this.toast.class = 'toast-ok';
+                    this.toast.title = 'OK';
+                    this.toast.message = "Mensagem enviada!";
+                } else if (this.errors.includes('O código informado não corresponde a nenhum curso.')) {
+                    this.toast.class = 'toast-error';
+                    this.toast.title = 'Erro';
+                    this.toast.message = "O código informado não corresponde a nenhum curso.";
                 } else {
-                    this.errors = {
-                        courseCode: '',
-                        comment: ''
-                    };
-
-                    if (!this.comment) {
-                        this.errors.comment = 'A mensagem é obrigatória.';
-                    }
-                    if (!this.courseCode) {
-                        this.errors.courseCode = 'O código da disciplina é obrigatório.';
-                    }
+                    this.toast.class = 'toast-error';
+                    this.toast.title = 'Erro';
+                    this.toast.message = "Não foi possível enviar a mensagem.";
                 }
-            },
-            clearComment() {
-                this.errors = {
-                        courseCode: '',
-                        comment: ''
-                    };
+                this.toast.show = true;
+            }
+        },
+        computed: {
+            charactersLeft() {
+                var characters = this.text.length,
+                    limit = 200;
 
-                this.comment = '';
-                this.courseCode = '';
+                return (limit - characters);
             }
         }
     });

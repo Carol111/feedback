@@ -1,0 +1,39 @@
+{% extends 'course/base.html' %}
+
+{% block sub_content %}
+<div id="add">
+    <form method="POST" action="add">
+        {% csrf_token %}
+        <div class="title">
+            <input type="text" class="input" name="title" v-model="title" placeholder="Nome da disciplina" maxlength="100" autofocus required id="id_title">
+        </div>
+        <div class="code">
+            <input type="code" class="input" name="code" v-model="code" placeholder="Código da disciplina" maxlength="20" required id="id_code">
+        </div>
+        <div v-if="errors">
+            <p>Já existe um curso com este código.</p>
+        </div>
+        <br>
+        <button type="submit" class="primary-button">Criar</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    var home = new Vue({
+        el: '#add',
+        delimiters: ['[[', ']]'],
+        data () {
+            return {
+                title: '{{ form.title.value }}',
+                code: '{{ form.code.value }}',
+                errors: '{{ form.errors }}'
+            }
+        },
+        mounted() {
+            console.log(this.errors)
+        }
+    });
+</script>
+{% endblock %}
