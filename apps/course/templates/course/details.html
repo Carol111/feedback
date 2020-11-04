@@ -1,0 +1,12 @@
+{% extends 'core/loggedArea.html' %}
+
+{% block content %}
+    <p class="title"><b>{{course.title}} | {{course.code}}</b></p>
+
+    <a href="{% url 'list_course' %}">Visão Geral</a>
+    <a href="{% url 'add_course' %}">Mensagens</a>
+    <a href="{% url 'add_course' %}">Palavras Frequentes</a>
+
+    {% block sub_content %}
+    {% endblock %}
+{% endblock %}

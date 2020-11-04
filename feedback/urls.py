@@ -20,7 +20,7 @@ from django.contrib.auth import views
 from apps.core.views import home, about
 from apps.userprofile.views import register, settings
 from apps.period.views import add_period, list_period
-from apps.course.views import add_course, list_course
+from apps.course.views import add_course, list_course, course_detail
 
 urlpatterns = [
     #FRONTPAGE
@@ -34,6 +34,7 @@ urlpatterns = [
     path('period/list', list_period, name='list_period'),
     path('course/add', add_course, name='add_course'),
     path('course/list', list_course, name='list_course'),
+    path('course/<slug:course_code>/', course_detail, name='course_detail'),
 
     # AUTH
     path('register/', register, name='register'),

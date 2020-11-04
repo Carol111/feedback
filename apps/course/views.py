@@ -38,3 +38,9 @@ def add_course(request):
             return redirect('add_course')
 
     return render(request, 'course/add.html', {'form':form})
+
+@login_required
+def course_detail(request, course_code):
+    course = Course.objects.get(code=course_code)
+
+    return render(request, 'course/details.html', {'course':course})

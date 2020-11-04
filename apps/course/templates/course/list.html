@@ -2,8 +2,8 @@
 
 {% block sub_content %}
     {% for course in courses %}
-        <div class='{{course.rating}}'>
+        <a href="{% url 'course_detail' course.code %}" class='{{course.rating}}'>
             {{course.title}} | {{course.code}} | {{course.comments}} mensagens
-        </div>
+        </a>
 	{% endfor %}
 {% endblock %}
