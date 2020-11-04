@@ -40,7 +40,20 @@ def add_course(request):
     return render(request, 'course/add.html', {'form':form})
 
 @login_required
-def course_detail(request, course_code):
+def course_overview(request, course_code):
+    course = Course.objects.get(code=course_code)
+    print(course)
+
+    return render(request, 'course/overview.html', {'course':course})
+
+@login_required
+def course_messages(request, course_code):
     course = Course.objects.get(code=course_code)
 
-    return render(request, 'course/details.html', {'course':course})
+    return render(request, 'course/messages.html', {'course':course})
+
+@login_required
+def course_frequent_words(request, course_code):
+    course = Course.objects.get(code=course_code)
+
+    return render(request, 'course/frequent-words.html', {'course':course})
