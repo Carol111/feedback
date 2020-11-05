@@ -2,8 +2,10 @@
 
 {% block sub_content %}
     {% for course in courses %}
-        <a href="{% url 'course_overview' course.code %}" class='{{course.rating}}'>
-            {{course.title}} | {{course.code}} | {{course.comments}} mensagens
-        </a>
+        <div>
+            <a href="{% url 'course_overview' course.code %}" class='{{course.rating}}'>
+                {{course.title}} | {{course.code}} | {{course.comments}} mensagens
+            </a>
+        </div>
 	{% endfor %}
 {% endblock %}

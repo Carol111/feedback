@@ -49,8 +49,9 @@ def course_overview(request, course_code):
 @login_required
 def course_messages(request, course_code):
     course = Course.objects.get(code=course_code)
+    comments = Comment.objects.filter(course__code=course_code)
 
-    return render(request, 'course/messages.html', {'course':course})
+    return render(request, 'course/messages.html', {'course':course, 'comments':comments})
 
 @login_required
 def course_frequent_words(request, course_code):

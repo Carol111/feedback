@@ -7,4 +7,10 @@
     <a href="{% url 'course_messages' course.code %}">+Mensagens+</a>
     <a href="{% url 'course_frequent_words' course.code %}">Palavras Frequentes</a>
 
+    {% for comment in comments %}
+        <div class='{{comment.rating}}'>
+            {{comment.text}} | {{comment.date}}
+        </div>
+	{% endfor %}
+
 {% endblock %}
