@@ -1,9 +1,100 @@
 {% extends 'course/base.html' %}
 
 {% block sub_content %}
-    {% for course in courses %}
-        <a href="{% url 'course_overview' course.code %}" class='{{course.rating}}'>
-            {{course.title}} | {{course.code}} | {{course.comments}} mensagens
-        </a>
-	{% endfor %}
+    <div id='list'>
+        {% for course in courses %}
+            <div>
+                <a href="{% url 'course_overview' course.code %}" class='{{course.rating}}'>
+                    {{course.title}} | {{course.code}} | {{course.comments}} mensagens
+                </a>
+                <button @click="removeModal('{{ course.title }}', '{{ course.code }}')">Excluir</button>
+            </div>
+        {% endfor %}
+        <div v-if="showModal" class="modal-mask">
+            <transition name="modal">
+                <div class="modal-wrapper">
+                    <div class="modal-container">
+
+                        <div class="modal-header">
+                            <slot name="header">
+                                default header
+                            </slot>
+                            <button class="modal-default-button" @click="closeModal">
+                                x
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <slot name="body">
+                                [[courseToBeRemoved.title]]
+                            </slot>
+                        </div>
+
+                        <div class="modal-footer">
+                            <slot name="footer">
+                                default footer
+                                <button class="modal-default-button" @click=removeCourse()>
+                                    OK
+                                </button>
+                            </slot>
+                        </div>
+                    </div>
+                </div>
+            </transition>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    var list = new Vue({
+        el: '#list',
+        delimiters: ['[[', ']]'],
+        data () {
+            return {
+                showModal: false,
+                courseToBeRemoved: {
+                    title: '',
+                    code: ''
+                }
+            }
+        },
+        methods: {
+            removeModal(course_title, course_code) {
+                this.courseToBeRemoved.title = course_title
+                this.courseToBeRemoved.code = course_code
+                this.showModal = true
+            },
+            closeModal() {
+                this.courseToBeRemoved.title = ''
+                this.courseToBeRemoved.code = ''
+                this.showModal = false
+            },
+            removeCourse() {
+                var data = {
+                    'course_code': this.courseToBeRemoved.code
+                };
+                console.log(data)
+
+                fetch('/api/api_remove_course/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify(data)
+                })
+                .then((response) => {
+                    this.courseToBeRemoved.title = ''
+                    this.courseToBeRemoved.code = ''
+                    this.showModal = false
+                    location.reload(true);
+                })
+                .catch(function (error) {
+                })
+            }
+        }
+    });
+</script>
 {% endblock %}
