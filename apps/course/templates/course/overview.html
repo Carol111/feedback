@@ -1,10 +1,159 @@
 {% extends 'core/loggedArea.html' %}
 
 {% block content %}
+<div id="overview">
     <p class="title"><b>{{course.title}} | {{course.code}}</b></p>
 
     <a href="{% url 'course_overview' course.code %}">+Visão Geral+</a>
     <a href="{% url 'course_messages' course.code %}">Mensagens</a>
-    <a href="{% url 'course_frequent_words' course.code %}">Palavras Frequentes</a>
 
+    <div>
+        <p>Avaliação Geral</p>
+        <div style="width:10%;">
+            <canvas id="generalRatings"></canvas>
+        </div>
+        {{count_positive_comments}} Positivos
+        <br>
+        {{count_negative_comments}} Negativos
+    </div>
+
+    <div>
+        <p>Intervalo de tempo</p>
+        <input type="text" name="dateRange" value="{{date_range}}"/>
+        <div>
+            <span id="positiveCommentsByRange">{{count_positive_comments}}</span> Positivos
+            <br>
+            <span id="negativeCommentsByRange">{{count_negative_comments}}</span> Negativos
+        </div>
+    </div>
+
+    <div>
+        <p>Palavras frequentes</p>
+        <div id="chartdiv" style="width:40%;"></div>
+    </div>
+
+    <div style="width:40%;">
+        <p>Avaliações ao longo do tempo</p>
+        <canvas id="ratingsByDate"></canvas>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(function() {
+            $('input[name="dateRange"]').daterangepicker({
+                locale: {
+                    format: 'DD/MM/YYYY'
+                }
+            }, function(start, end, label) {
+                var data = {
+                    'course_code': '{{course.code}}',
+                    'start_date': start.format('YYYY-MM-DD'),
+                    'end_date': end.format('YYYY-MM-DD')
+                };
+
+                fetch('/api/date_range/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then((responseData) => {
+                    document.getElementById("positiveCommentsByRange").innerHTML = responseData.positive_comments_by_range
+                    document.getElementById("negativeCommentsByRange").innerHTML = responseData.negative_comments_by_range
+                })
+            });
+        });
+
+        var generalRatingsChart = document.getElementById('generalRatings').getContext('2d');
+        var doughnutChart = new Chart(generalRatingsChart, {
+            type: 'doughnut',
+            data: {
+                labels: '',
+                datasets: [
+                    {
+                        label: '',
+                        backgroundColor: ['rgb(26, 202, 160)','rgb(241, 64, 64)'],
+                        data: ['{{count_positive_comments}}', '{{count_negative_comments}}'],
+                    }
+                ]
+            },
+            options: {
+                tooltips: {
+                    enabled: false
+                }
+            }
+        });
+
+        var ratingsByDateChart = document.getElementById('ratingsByDate').getContext('2d');
+        var linearChart = new Chart(ratingsByDateChart, {
+            type: 'line',
+            data: {
+                labels: JSON.parse("{{linear_dataset.linear_label|escapejs}}"),
+                datasets: [
+                    {
+                        label: 'Positivos',
+                        backgroundColor: 'rgb(26, 202, 160)',
+                        borderColor: 'rgb(26, 202, 160)',
+                        data: JSON.parse("{{linear_dataset.linear_positive_series|escapejs}}"),
+                        fill: false
+                    },
+                    {
+                        label: 'Negativos',
+                        backgroundColor: 'rgb(241, 64, 64)',
+                        borderColor: 'rgb(241, 64, 64)',
+                        data: JSON.parse("{{linear_dataset.linear_negative_series|escapejs}}"),
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                tooltips: {
+                    mode: 'index',
+                    intersect: false
+                },
+                hover: {
+                    mode: 'nearest',
+                    intersect: true
+                }
+            }
+        });
+
+        am4core.ready(function() {
+            am4core.useTheme(am4themes_frozen);
+
+            var chart = am4core.create("chartdiv", am4plugins_wordCloud.WordCloud);
+            var series = chart.series.push(new am4plugins_wordCloud.WordCloudSeries());
+
+            console.log(JSON.parse("{{word_cloud_dataset.stopwords|escapejs}}"));
+
+            series.accuracy = 4;
+            series.step = 15;
+            series.rotationThreshold = 0.7;
+            series.maxCount = 80;
+            series.minWordLength = 2;
+            series.labels.template.margin(4,4,4,4);
+            series.maxFontSize = am4core.percent(30);
+
+            series.text = "{{word_cloud_dataset.frequent_words|escapejs}}";
+            series.excludeWords = JSON.parse("{{word_cloud_dataset.stopwords|escapejs}}");
+
+            series.colors = new am4core.ColorSet();
+            series.colors.passOptions = {};
+
+            series.labels.template.tooltipText = "{word}: {value}";
+
+            series.angles = [0,-90];
+            series.fontWeight = "700"
+
+            setInterval(function () {
+                series.dataItems.getIndex(Math.round(Math.random() * (series.dataItems.length - 1))).setValue("value", Math.round(Math.random() * 10));
+            }, 10000)
+        });
+    </script>
 {% endblock %}

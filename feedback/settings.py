@@ -41,7 +41,7 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'settings'
+LOGIN_REDIRECT_URL = 'list_course'
 LOGOUT_REDIRECT_URL = 'home'
 
 # Application definition

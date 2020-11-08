@@ -4,6 +4,11 @@ from django.contrib.auth.decorators import login_required
 from .models import Course
 from .forms import CourseForm
 from ..core.models import Comment
+from .stopwords import STOPWORDS
+
+import pandas as pd
+import datetime
+import json
 
 @login_required
 def list_course(request):
@@ -42,9 +47,50 @@ def add_course(request):
 @login_required
 def course_overview(request, course_code):
     course = Course.objects.get(code=course_code)
-    print(course)
 
-    return render(request, 'course/overview.html', {'course':course})
+    comments = Comment.objects.filter(course__code=course_code)
+
+    positive_comments = comments.filter(rating='positive')
+    negative_comments = comments.filter(rating='negative')
+
+    count_positive_comments = positive_comments.count()
+    count_negative_comments = negative_comments.count()
+
+    date_range = course.created_at.strftime('%d/%m/%Y') + ' - ' + datetime.datetime.now().strftime('%d/%m/%Y')
+
+    period = pd.date_range(start=course.created_at.date(), end=datetime.datetime.now().date(), freq='D')
+
+    linear_positive_series = []
+    linear_negative_series = []
+    linear_label = []
+
+    for day in period:
+        linear_positive_series.append(positive_comments.filter(date=day).count())
+        linear_negative_series.append(negative_comments.filter(date=day).count())
+        linear_label.append(day.strftime('%d/%m'))
+
+    frequent_words = ''
+
+    for comment in comments:
+        frequent_words += ' ' + comment.text.lower()
+
+    context = {
+        'course': course,
+        'count_positive_comments': count_positive_comments,
+        'count_negative_comments': count_negative_comments,
+        'date_range': date_range,
+        'linear_dataset': {
+            'linear_label': json.dumps(linear_label),
+            'linear_positive_series': linear_positive_series,
+            'linear_negative_series': linear_negative_series
+        },
+        'word_cloud_dataset': {
+            'frequent_words': frequent_words,
+            'stopwords': json.dumps(STOPWORDS)
+        }
+    }
+
+    return render(request, 'course/overview.html', context)
 
 @login_required
 def course_messages(request, course_code):
