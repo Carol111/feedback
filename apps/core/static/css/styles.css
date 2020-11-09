@@ -3,6 +3,8 @@ body {
     font-family: 'Montserrat', sans-serif;
 }
 
+/* ----------- Menu ----------- */
+
 .purple-bar {
     position: fixed;
     top: 0px;
@@ -69,6 +71,8 @@ body {
     left: 0;
 }
 
+/* ----------- Home Page ----------- */
+
 #home {
     display: flex;
     flex-wrap: wrap;
@@ -94,6 +98,76 @@ body {
 
 @media screen and (max-height: 580px) {
     .home-right {
+        display: none !important;
+    }
+}
+
+/* ----------- Login - Register ----------- */
+
+#login, #register {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.user-left {
+    width: 60%;
+}
+
+.user-right {
+    width: 40%;
+}
+
+.user-left img {
+    left: 0;
+    bottom: 0;
+    position: fixed;
+    max-width: 649px;
+}
+
+@media screen and (max-width: 1050px) {
+    .user-left {
+        display: none !important;
+    }
+}
+
+@media screen and (max-height: 640px) {
+    .user-left {
+        display: none !important;
+    }
+}
+
+/* ----------- Login - Register ----------- */
+
+#about {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.about-left {
+    width: 60%;
+}
+
+.about-right {
+    width: 40%;
+}
+
+.about-left img {
+    left: 3%;
+    top: 20%;
+    position: fixed;
+    width: 50%;
+}
+
+@media screen and (max-width: 800px) {
+    .about-left {
+        display: none !important;
+    }
+}
+
+@media screen and (max-height: 600px) {
+    .about-left {
         display: none !important;
     }
 }
