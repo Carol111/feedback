@@ -68,3 +68,32 @@ body {
     width: 100%;
     left: 0;
 }
+
+#home {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.home-left {
+    width: 50%;
+}
+
+.home-right {
+    width: 50%;
+    position: fixed;
+    bottom: -5px;
+    right: -15px;
+}
+
+@media screen and (max-width: 800px) {
+    .home-right {
+        display: none !important;
+    }
+}
+
+@media screen and (max-height: 580px) {
+    .home-right {
+        display: none !important;
+    }
+}

@@ -1,32 +1,38 @@
 {% extends "core/base.html" %}
+{% load static %}
 {% block content %}
 <div id="home">
-    <p>Deixe seu feedback aqui</p>
+    <div class="home-left">
+        <p>Deixe seu feedback aqui</p>
 
-    <form method="POST" action="">
-        {% csrf_token %}
-        <div class="course-code">
-            <input type="text" class="input" name="course" id="id_course" v-model="course" autofocus placeholder="Insira o código da disciplina" required>
-        </div>
-        <div class="comment">
-            <input type="text" class="input" name="text" id="id_text" v-model="text" placeholder="Deixe a sua mensagem anonimamente..." maxlength="200" required>
-        </div>
-        <span class="limiter">[[charactersLeft]]</span>
-        <br>
-        <button type="reset" class="secondary-button" @click="course = text = ''">Limpar</button>
-        <button type="submit" class="primary-button">Enviar</button>
-    </form>
+        <form method="POST" action="">
+            {% csrf_token %}
+            <div class="course-code">
+                <input type="text" class="input" name="course" id="id_course" v-model="course" autofocus placeholder="Insira o código da disciplina" required>
+            </div>
+            <div class="comment">
+                <input type="text" class="input" name="text" id="id_text" v-model="text" placeholder="Deixe a sua mensagem anonimamente..." maxlength="200" required>
+            </div>
+            <span class="limiter">[[charactersLeft]]</span>
+            <br>
+            <button type="reset" class="secondary-button" @click="course = text = ''">Limpar</button>
+            <button type="submit" class="primary-button">Enviar</button>
+        </form>
 
-    <transition name="toast">
-        <div v-bind:class="toast.class" v-if="toast.show">
-            <span>Icon</span>
-            <p>[[toast.title]]</p>
-            <p>[[toast.message]]</p>
-            <button @click="toast.show = false">Fechar</button>
-        </div>
-    </transition>
+        <transition name="toast">
+            <div v-bind:class="toast.class" v-if="toast.show">
+                <span>Icon</span>
+                <p>[[toast.title]]</p>
+                <p>[[toast.message]]</p>
+                <button @click="toast.show = false">Fechar</button>
+            </div>
+        </transition>
 
-    <p>Ferramenta de código aberto. Visite-nos no <a href="https://github.com/Carol111/feedback" target="_blank">GitHub</a>.</p>
+        <p>Ferramenta de código aberto. Visite-nos no <a href="https://github.com/Carol111/feedback" target="_blank">GitHub</a>.</p>
+    </div>
+    <div class="home-right">
+        <span class="student-image"><img src="{% static 'img/student.svg' %}" alt="Feedback Logo"></span>
+    </div>
 </div>
 {% endblock %}
 
