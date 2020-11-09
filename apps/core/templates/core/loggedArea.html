@@ -9,6 +9,7 @@
     <title>Feedback</title>
     <link rel="shortcut icon" href="{% static 'img/logo.ico' %}">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
@@ -21,17 +22,25 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 </head>
 <body>
-    <div class="content">
-        <h1>Feedback</h1>
-        <p>A visão do aluno sobre a sua aula</p>
-        <br><br>
-        <a href="{% url 'list_course' %}">Disciplinas</a>
-        <a href="{% url 'settings' %}">Configurações</a>
-        <a href="{% url 'logout' %}">Sair</a>
-        {% block content %}
-        {% endblock %}
+    <div class="logged-purple-bar">
+        <div class="content-area">
+            <div class="header">
+                <a href="{% url 'home' %}"><img src="{% static 'img/menu_logo.svg' %}" alt="Feedback Logo"></a>
+                <div class="menu-item">
+                    <ul>
+                        <li><a href="{% url 'list_course' %}">Disciplinas</a></li>
+                        <li><a href="{% url 'settings' %}">Configurações</a></li>
+                        <li><a href="{% url 'logout' %}">Sair</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="content">
+                {% block content %}
+                {% endblock %}
+            </div>
+            {% block scripts %}
+            {% endblock %}
+        </div>
     </div>
-    {% block scripts %}
-	{% endblock %}
 </body>
 </html>
