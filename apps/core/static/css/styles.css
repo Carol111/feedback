@@ -114,6 +114,47 @@ body {
 }
 
 /* ----------- Buttons ----------- */
+.primary-button, .secondary-button {
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    padding: 12px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 12px;
+    margin: 4px 2px;
+    min-width: 130px;
+    display: inline-block;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-family: 'Montserrat', sans-serif;
+    outline: none;
+}
+
+.primary-button {
+    border: 1px solid #455CC7;
+    color: #455CC7;
+}
+
+.secondary-button {
+    border: 1px solid #8289A6;
+    color: #8289A6;
+}
+
+.primary-button:hover {
+    background-color: #455CC7;
+    color: #FFFFFF;
+}
+
+.secondary-button:hover {
+    background-color: #8289A6;
+    color: #FFFFFF;
+}
+
+.home-buttons {
+    margin: 5px 0 60px 0;
+}
 
 /* ----------- Menu ----------- */
 
@@ -215,6 +256,9 @@ body {
     }
     .input {
         width: 80%;
+    }
+    .primary-button, .secondary-button {
+        min-width: 50px;
     }
 }
 

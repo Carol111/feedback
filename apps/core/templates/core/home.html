@@ -28,9 +28,10 @@
                         cy="16"/>
                 </svg>
             </div>
-            <br>
-            <button type="reset" class="secondary-button" @click="course = text = ''">Limpar</button>
-            <button type="submit" class="primary-button">Enviar</button>
+            <div class="home-buttons">
+                <button type="reset" class="secondary-button" @click="course = text = ''">Limpar</button>
+                <button type="submit" class="primary-button">Enviar</button>
+            </div>
         </form>
 
         <transition name="toast">
