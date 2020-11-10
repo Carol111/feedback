@@ -1,7 +1,119 @@
 body {
     background-color: #F4F4F7;
     font-family: 'Montserrat', sans-serif;
+    color: #282828
 }
+
+/* ----------- Text ----------- */
+.title {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.text {
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.small-text {
+    font-weight: 400;
+    font-size: 12px;
+}
+
+.bold-medium {
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.bold-big {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.header {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.header-big {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.small-link {
+    font-weight: 600;
+    font-size: 12px;
+    text-decoration: none;
+    color: #455CC7;
+}
+
+.spotlight {
+    font-weight: 600;
+    font-size: 24px;
+}
+
+/* ----------- Colors ----------- */
+.white {
+    color: #FFFFFF
+}
+
+.dark-grey {
+    color: #8289A6
+}
+
+.pink {
+    color: #FC6596
+}
+
+.green {
+    color: #1ACAA0
+}
+
+.red {
+    color: #F14040
+}
+
+/* ----------- Input ----------- */
+.input {
+    width: 75%;
+    margin: 5px 0;
+    padding: 12px 20px;
+    border: 2px solid #455CC7;
+    border-radius: 5px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    outline: none;
+}
+
+.input:focus {
+    border: 2px solid #FC6596;
+}
+
+.large-input {
+    height: 200px;
+    resize: none;
+}
+
+/* ----------- Progress Circle ----------- */
+.comment {
+    position: relative;
+}
+
+.progress-ring {
+    z-index: 1;
+    position: absolute;
+    bottom: 20px;
+    right: 20%;
+}
+
+.progress-ring__circle {
+    transition: stroke-dashoffset 0.1s;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+}
+
+/* ----------- Buttons ----------- */
 
 /* ----------- Menu ----------- */
 
@@ -81,6 +193,7 @@ body {
 
 .home-left {
     width: 50%;
+    margin: 50px 0;
 }
 
 .home-right {
@@ -93,6 +206,15 @@ body {
 @media screen and (max-width: 800px) {
     .home-right {
         display: none !important;
+    }
+    .home-left {
+        width: 100%;
+    }
+    .progress-ring {
+        right: 8%;
+    }
+    .input {
+        width: 80%;
     }
 }
 
@@ -137,7 +259,12 @@ body {
     }
 }
 
-/* ----------- Login - Register ----------- */
+.center-link {
+    text-align: center;
+    padding-right: 20%;
+}
+
+/* ----------- About ----------- */
 
 #about {
     display: flex;

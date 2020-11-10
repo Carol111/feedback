@@ -3,7 +3,7 @@
 {% block content %}
 <div id="home">
     <div class="home-left">
-        <p>Deixe seu feedback aqui</p>
+        <p class="header-big white">Deixe seu feedback aqui:</p>
 
         <form method="POST" action="">
             {% csrf_token %}
@@ -11,9 +11,23 @@
                 <input type="text" class="input" name="course" id="id_course" v-model="course" autofocus placeholder="Insira o código da disciplina" required>
             </div>
             <div class="comment">
-                <input type="text" class="input" name="text" id="id_text" v-model="text" placeholder="Deixe a sua mensagem anonimamente..." maxlength="200" required>
+                <textarea type="text" class="input large-input" name="text" id="id_text" v-model="text" placeholder="Deixe a sua mensagem anonimamente..." maxlength="200" cols="40" rows="5" required></textarea>
+                <svg
+                    class="progress-ring"
+                    width="32"
+                    height="32">
+                    <circle
+                        class="progress-ring__circle"
+                        stroke="#455CC7"
+                        stroke-width="2"
+                        fill="transparent"
+                        stroke-dasharray="75.398 75.398"
+                        :style="{ strokeDashoffset: strokeDashoffset }"
+                        r="12"
+                        cx="16"
+                        cy="16"/>
+                </svg>
             </div>
-            <span class="limiter">[[charactersLeft]]</span>
             <br>
             <button type="reset" class="secondary-button" @click="course = text = ''">Limpar</button>
             <button type="submit" class="primary-button">Enviar</button>
@@ -28,7 +42,7 @@
             </div>
         </transition>
 
-        <p>Ferramenta de código aberto. Visite-nos no <a href="https://github.com/Carol111/feedback" target="_blank">GitHub</a>.</p>
+        <p class="small-text">Ferramenta de código aberto. Visite-nos no <a class="small-link" href="https://github.com/Carol111/feedback" target="_blank">GitHub</a>.</p>
     </div>
     <div class="home-right">
         <img src="{% static 'img/student.svg' %}" alt="Estudantes assistindo aula, com frase: Envie um feedback construitivo para o professor.">
@@ -76,11 +90,13 @@
             }
         },
         computed: {
-            charactersLeft() {
-                var characters = this.text.length,
-                    limit = 200;
+            strokeDashoffset() {
+                var progress = this.text.length / 2;
+                const normalizedRadius = 12; //radius - stroke * 2
+                const circumference = normalizedRadius * 2 * Math.PI;
+                console.log(progress);
 
-                return (limit - characters);
+                return circumference - progress / 100 * circumference;
             }
         }
     });
