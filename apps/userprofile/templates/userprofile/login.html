@@ -1,33 +1,39 @@
 {% extends 'core/base.html' %}
+{% load static %}
 
 {% block content %}
 <div id="login">
-    <p>Insira seus dados</p>
+    <div class="user-left">
+        <img src="{% static 'img/teacher.svg' %}" alt="Professor dando aula, com frase: Saiba o que os alunos pensam sobre a sua aula.">
+    </div>
+    <div class="user-right">
+        <p>Insira seus dados</p>
 
-    <form method="POST" action=".">
-        {% csrf_token %}
-        <div class="username">
-            <input type="text" class="input" name="username" placeholder="Nome de usuário" autofocus autocomplete="username" maxlength="150" required id="id_username">
-        </div>
-        <div class="password">
-            <input type="password" class="input" name="password" placeholder="Senha" autocomplete="current-password" required id="id_password">
-        </div>
+        <form method="POST" action=".">
+            {% csrf_token %}
+            <div class="username">
+                <input type="text" class="input" name="username" placeholder="Nome de usuário" autofocus autocomplete="username" maxlength="150" required id="id_username">
+            </div>
+            <div class="password">
+                <input type="password" class="input" name="password" placeholder="Senha" autocomplete="current-password" required id="id_password">
+            </div>
+            <br>
+            <button type="submit" class="primary-button">Entrar</button>
+
+        </form>
+
+        <transition name="toast">
+            <div v-bind:class="toast.class" v-if="toast.show">
+                <span>Icon</span>
+                <p>[[toast.title]]</p>
+                <p>[[toast.message]]</p>
+                <button @click="toast.show = false">Fechar</button>
+            </div>
+        </transition>
+
         <br>
-        <button type="submit" class="primary-button">Entrar</button>
-
-    </form>
-
-    <transition name="toast">
-        <div v-bind:class="toast.class" v-if="toast.show">
-            <span>Icon</span>
-            <p>[[toast.title]]</p>
-            <p>[[toast.message]]</p>
-            <button @click="toast.show = false">Fechar</button>
-        </div>
-    </transition>
-
-    <br>
-    <a href="{% url 'password_reset' %}">Esqueceu a senha?</a>
+        <p class="center-link"><a href="{% url 'password_reset' %}">Esqueceu a senha?</a></p>
+    </div>
 </div>
 {% endblock %}
 

@@ -1,28 +1,34 @@
 {% extends 'core/base.html' %}
+{% load static %}
 
 {% block content %}
 <div id="register">
-    <p>Faça seu Cadastro</p>
+    <div class="user-left">
+        <img src="{% static 'img/teacher.svg' %}" alt="Professor dando aula, com frase: Saiba o que os alunos pensam sobre a sua aula.">
+    </div>
+    <div class="user-right">
+        <p>Faça seu Cadastro</p>
 
-    <form method="POST" action=".">
-        {% csrf_token %}
-        <div class="username" v-bind:class="{ error: errors.username }">
-            <input type="text" class="input" name="username" v-model="username" placeholder="Usuário" maxlength="150" autofocus required id="id_username" title="Insira penas letras ou números.">
-        </div>
-        <div class="email" v-bind:class="{ error: errors.email }">
-            <input type="email" class="input" name="email" v-model="email" placeholder="Email" maxlength="255" required id="id_email" title="Insira um email válido.">
-        </div>
-        <div class="password" v-bind:class="{ error: errors.password }">
-            <input type="password" class="input" name="password1" placeholder="Senha" autocomplete="new-password" required id="id_password1" aria-autocomplete="list" title="Mínimo de 8 caracteres. Evitar padrões comuns e semelhança com os demais campos.">
-        </div>
-        <div class="password" v-bind:class="{ error: errors.password }">
-            <input type="password" class="input" name="password2" placeholder="Confirme a senha" autocomplete="new-password" required id="id_password2" title="As senhas devem ser iguais.">
-        </div>
-        <br>
-        <button type="submit" class="primary-button">Cadastrar</button>
-    </form>
+        <form method="POST" action=".">
+            {% csrf_token %}
+            <div class="username" v-bind:class="{ error: errors.username }">
+                <input type="text" class="input" name="username" v-model="username" placeholder="Usuário" maxlength="150" autofocus required id="id_username" title="Insira penas letras ou números.">
+            </div>
+            <div class="email" v-bind:class="{ error: errors.email }">
+                <input type="email" class="input" name="email" v-model="email" placeholder="Email" maxlength="255" required id="id_email" title="Insira um email válido.">
+            </div>
+            <div class="password" v-bind:class="{ error: errors.password }">
+                <input type="password" class="input" name="password1" placeholder="Senha" autocomplete="new-password" required id="id_password1" aria-autocomplete="list" title="Mínimo de 8 caracteres. Evitar padrões comuns e semelhança com os demais campos.">
+            </div>
+            <div class="password" v-bind:class="{ error: errors.password }">
+                <input type="password" class="input" name="password2" placeholder="Confirme a senha" autocomplete="new-password" required id="id_password2" title="As senhas devem ser iguais.">
+            </div>
+            <br>
+            <button type="submit" class="primary-button">Cadastrar</button>
+        </form>
 
-    <p><a href="{% url 'login' %}">Já possui uma conta?</a></p>
+        <p class="center-link"><a href="{% url 'login' %}">Já possui uma conta?</a></p>
+    </div>
 </div>
 {% endblock %}
 

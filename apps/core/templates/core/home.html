@@ -1,32 +1,54 @@
 {% extends "core/base.html" %}
+{% load static %}
 {% block content %}
 <div id="home">
-    <p>Deixe seu feedback aqui</p>
+    <div class="home-left">
+        <p class="header-big white">Deixe seu feedback aqui:</p>
 
-    <form method="POST" action="">
-        {% csrf_token %}
-        <div class="course-code">
-            <input type="text" class="input" name="course" id="id_course" v-model="course" autofocus placeholder="Insira o código da disciplina" required>
-        </div>
-        <div class="comment">
-            <input type="text" class="input" name="text" id="id_text" v-model="text" placeholder="Deixe a sua mensagem anonimamente..." maxlength="200" required>
-        </div>
-        <span class="limiter">[[charactersLeft]]</span>
-        <br>
-        <button type="reset" class="secondary-button" @click="course = text = ''">Limpar</button>
-        <button type="submit" class="primary-button">Enviar</button>
-    </form>
+        <form method="POST" action="">
+            {% csrf_token %}
+            <div class="course-code">
+                <input type="text" class="input" name="course" id="id_course" v-model="course" autofocus placeholder="Insira o código da disciplina" required>
+            </div>
+            <div class="comment">
+                <textarea type="text" class="input large-input" name="text" id="id_text" v-model="text" placeholder="Deixe a sua mensagem anonimamente..." maxlength="200" cols="40" rows="5" required></textarea>
+                <svg
+                    class="progress-ring"
+                    width="32"
+                    height="32">
+                    <circle
+                        class="progress-ring__circle"
+                        stroke="#455CC7"
+                        stroke-width="2"
+                        fill="transparent"
+                        stroke-dasharray="75.398 75.398"
+                        :style="{ strokeDashoffset: strokeDashoffset }"
+                        r="12"
+                        cx="16"
+                        cy="16"/>
+                </svg>
+            </div>
+            <div class="home-buttons">
+                <button type="reset" class="secondary-button" @click="course = text = ''">Limpar</button>
+                <button type="submit" class="primary-button">Enviar</button>
+            </div>
+        </form>
 
-    <transition name="toast">
-        <div v-bind:class="toast.class" v-if="toast.show">
-            <span>Icon</span>
-            <p>[[toast.title]]</p>
-            <p>[[toast.message]]</p>
-            <button @click="toast.show = false">Fechar</button>
-        </div>
-    </transition>
+        <transition name="toast">
+            <div class="toast" v-if="toast.show">
+                <div v-bind:class="toast.class">
+                    <p>[[toast.title]]</p>
+                    <span class="toast-close" @click="toast.show = false">&times;</span>
+                </div>
+                <p class="toast-message"> [[toast.message]]</p>
+            </div>
+        </transition>
 
-    <p>Ferramenta de código aberto. Visite-nos no <a href="https://github.com/Carol111/feedback" target="_blank">GitHub</a>.</p>
+        <p class="small-text">Ferramenta de código aberto. Visite-nos no <a class="small-link" href="https://github.com/Carol111/feedback" target="_blank">GitHub</a>.</p>
+    </div>
+    <div class="home-right">
+        <img src="{% static 'img/student.svg' %}" alt="Estudantes assistindo aula, com frase: Envie um feedback construitivo para o professor.">
+    </div>
 </div>
 {% endblock %}
 
@@ -52,29 +74,35 @@
         mounted() {
             if (this.course && this.text) {
                 if (this.submitStatus == 'True') {
-                    this.toast.class = 'toast-ok';
+                    this.toast.class = 'title-ok';
                     this.toast.title = 'OK';
                     this.toast.message = "Mensagem enviada!";
                     this.text = '';
                     this.course = '';
                 } else if (this.errors.includes('O código informado não corresponde a nenhum curso.')) {
-                    this.toast.class = 'toast-error';
+                    this.toast.class = 'title-error';
                     this.toast.title = 'Erro';
                     this.toast.message = "O código informado não corresponde a nenhum curso.";
                 } else {
-                    this.toast.class = 'toast-error';
+                    this.toast.class = 'title-error';
                     this.toast.title = 'Erro';
                     this.toast.message = "Não foi possível enviar a mensagem.";
                 }
                 this.toast.show = true;
+
+                setTimeout(() => {
+                    this.toast.show = false
+                }, 5000)
             }
         },
         computed: {
-            charactersLeft() {
-                var characters = this.text.length,
-                    limit = 200;
+            strokeDashoffset() {
+                var progress = this.text.length / 2;
+                const normalizedRadius = 12; //radius - stroke * 2
+                const circumference = normalizedRadius * 2 * Math.PI;
+                console.log(progress);
 
-                return (limit - characters);
+                return circumference - progress / 100 * circumference;
             }
         }
     });
