@@ -35,11 +35,12 @@
         </form>
 
         <transition name="toast">
-            <div v-bind:class="toast.class" v-if="toast.show">
-                <span>Icon</span>
-                <p>[[toast.title]]</p>
-                <p>[[toast.message]]</p>
-                <button @click="toast.show = false">Fechar</button>
+            <div class="toast" v-if="toast.show">
+                <div v-bind:class="toast.class">
+                    <p>[[toast.title]]</p>
+                    <span class="toast-close" @click="toast.show = false">&times;</span>
+                </div>
+                <p class="toast-message"> [[toast.message]]</p>
             </div>
         </transition>
 
@@ -73,21 +74,25 @@
         mounted() {
             if (this.course && this.text) {
                 if (this.submitStatus == 'True') {
-                    this.toast.class = 'toast-ok';
+                    this.toast.class = 'title-ok';
                     this.toast.title = 'OK';
                     this.toast.message = "Mensagem enviada!";
                     this.text = '';
                     this.course = '';
                 } else if (this.errors.includes('O código informado não corresponde a nenhum curso.')) {
-                    this.toast.class = 'toast-error';
+                    this.toast.class = 'title-error';
                     this.toast.title = 'Erro';
                     this.toast.message = "O código informado não corresponde a nenhum curso.";
                 } else {
-                    this.toast.class = 'toast-error';
+                    this.toast.class = 'title-error';
                     this.toast.title = 'Erro';
                     this.toast.message = "Não foi possível enviar a mensagem.";
                 }
                 this.toast.show = true;
+
+                setTimeout(() => {
+                    this.toast.show = false
+                }, 5000)
             }
         },
         computed: {

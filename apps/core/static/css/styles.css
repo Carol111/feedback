@@ -113,6 +113,55 @@ body {
     transform-origin: 50% 50%;
 }
 
+/* ----------- Toast ----------- */
+.toast {
+    width: 200px;
+    background-color: #333333;
+    color: #ffffff;
+    border-radius: 5px;
+    padding: 5px 16px 14px 16px;
+    position: fixed;
+    z-index: 2;
+    right: 5%;
+    top: 80px;
+    font-weight: 400;
+    font-size: 12px;
+}
+
+.title-ok, .title-error {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+}
+
+.title-ok p {
+    color: #1fe6b7;
+}
+
+.title-error p {
+    color: #ff4141;
+}
+
+.toast-close {
+    cursor: pointer;
+    padding: 8px 10px;
+    font-size: 20px;
+}
+
+.toast-message {
+    margin: 0;
+}
+
+.toast-enter-active, .toast-leave-active {
+    transition: 1s;
+}
+.toast-enter {
+    transform: translate(300px, 0);
+}
+.toast-leave-to {
+    transform: translate(300px, 0);
+}
+
 /* ----------- Buttons ----------- */
 .primary-button, .secondary-button {
     background-color: #FFFFFF;
