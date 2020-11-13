@@ -243,16 +243,6 @@ body {
     z-index: 1;
 }
 
-.logged-purple-bar {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 125px;
-    background-color: #455CC7;
-    z-index: 1;
-}
-
 .content-area {
     margin: 16px 10%;
 }
@@ -446,3 +436,53 @@ body {
         display: none !important;
     }
 }
+
+/* ---------------------------- Logged Area ---------------------------- */
+.section-header {
+    margin: 105px 0 30px 0;
+}
+
+.section-content input {
+    width: 50%;
+}
+
+.section-menu ul {
+    padding: 0;
+}
+
+.section-menu li {
+    display: table-cell;
+}
+
+.menu-text {
+    padding: 12px 10px 7px 10px;
+    margin: 5px;
+    position: relative;
+}
+
+.menu-text:after {
+    bottom: 0;
+    content: "";
+    display: block;
+    height: 4px;
+    left: 0;
+    width: 100%;
+    position: absolute;
+    background: #FC6596;
+}
+
+@media screen and (max-width: 660px) {
+    .section-header {
+        margin: 50px 0;
+    }
+    .menu-text {
+        padding: 0 10px 7px 10px;
+        margin: 5px;
+        position: relative;
+    }
+    .section-content input {
+        width: 100%;
+    }
+}
+
+/* ----------- Settings ----------- */
