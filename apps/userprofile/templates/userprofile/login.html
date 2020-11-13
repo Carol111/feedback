@@ -6,33 +6,28 @@
     <div class="user-left">
         <img src="{% static 'img/teacher.svg' %}" alt="Professor dando aula, com frase: Saiba o que os alunos pensam sobre a sua aula.">
     </div>
-    <div class="user-right">
-        <p>Insira seus dados</p>
+    <div class="user-right user-login">
+        <p class="header-big white">Insira seus dados</p>
 
         <form method="POST" action=".">
             {% csrf_token %}
-            <div class="username">
-                <input type="text" class="input" name="username" placeholder="Nome de usuário" autofocus autocomplete="username" maxlength="150" required id="id_username">
-            </div>
-            <div class="password">
-                <input type="password" class="input" name="password" placeholder="Senha" autocomplete="current-password" required id="id_password">
-            </div>
-            <br>
+            <input type="text" class="input" name="username" placeholder="Nome de usuário" autofocus autocomplete="username" maxlength="150" required id="id_username">
+            <input type="password" class="input" name="password" placeholder="Senha" autocomplete="current-password" required id="id_password">
             <button type="submit" class="primary-button">Entrar</button>
 
         </form>
 
+        <p class="user-link"><a href="{% url 'password_reset' %}" class="small-link">Esqueceu a senha?</a></p>
+
         <transition name="toast">
-            <div v-bind:class="toast.class" v-if="toast.show">
-                <span>Icon</span>
-                <p>[[toast.title]]</p>
-                <p>[[toast.message]]</p>
-                <button @click="toast.show = false">Fechar</button>
+            <div class="toast" v-if="toast.show">
+                <div v-bind:class="toast.class">
+                    <p>[[toast.title]]</p>
+                    <span class="toast-close" @click="toast.show = false">&times;</span>
+                </div>
+                <p class="toast-message">[[toast.message]]</p>
             </div>
         </transition>
-
-        <br>
-        <p class="center-link"><a href="{% url 'password_reset' %}">Esqueceu a senha?</a></p>
     </div>
 </div>
 {% endblock %}
@@ -55,11 +50,15 @@
         },
         mounted() {
             if (this.errors) {
-                this.toast.class = 'toast-error';
+                this.toast.class = 'title-error';
                 this.toast.title = 'Erro';
                 this.toast.message = "Nome de usuário ou senha inválido.";
 
                 this.toast.show = true;
+
+                setTimeout(() => {
+                    this.toast.show = false
+                }, 4000)
             }
         }
     });

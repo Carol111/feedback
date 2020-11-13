@@ -14,7 +14,7 @@ def register(request):
 
             login(request, user)
 
-            return redirect('home')
+            return redirect('list_course')
 
     return render(request, 'userprofile/register.html', {'form': form})
 
