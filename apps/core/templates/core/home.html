@@ -34,17 +34,17 @@
             </div>
         </form>
 
+        <p class="small-text">Ferramenta de código aberto. Visite-nos no <a class="small-link" href="https://github.com/Carol111/feedback" target="_blank">GitHub</a>.</p>
+
         <transition name="toast">
             <div class="toast" v-if="toast.show">
                 <div v-bind:class="toast.class">
                     <p>[[toast.title]]</p>
                     <span class="toast-close" @click="toast.show = false">&times;</span>
                 </div>
-                <p class="toast-message"> [[toast.message]]</p>
+                <p class="toast-message">[[toast.message]]</p>
             </div>
         </transition>
-
-        <p class="small-text">Ferramenta de código aberto. Visite-nos no <a class="small-link" href="https://github.com/Carol111/feedback" target="_blank">GitHub</a>.</p>
     </div>
     <div class="home-right">
         <img src="{% static 'img/student.svg' %}" alt="Estudantes assistindo aula, com frase: Envie um feedback construitivo para o professor.">
