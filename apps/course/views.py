@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
 from .models import Course
@@ -46,7 +46,8 @@ def add_course(request):
 
 @login_required
 def course_overview(request, course_code):
-    course = Course.objects.get(code=course_code)
+    courses = Course.objects.filter(user=request.user)
+    course = get_object_or_404(courses, code=course_code)
 
     comments = Comment.objects.filter(course__code=course_code)
 
