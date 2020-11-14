@@ -1,48 +1,62 @@
-{% extends 'course/base.html' %}
+{% extends 'core/loggedArea.html' %}
+{% load static %}
 
-{% block sub_content %}
-    <div id='list'>
+{% block content %}
+<div id='list'>
+    <div class="section-header">
+        <p class="title white">Disciplinas</p>
+        <div class="section-menu">
+            <ul>
+                <li class="header-big white menu-text active"><a href="{% url 'list_course' %}">Listar</a></li>
+                <li class="header-big white menu-text"><a href="{% url 'add_course' %}">Adicionar</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="section-content">
+        {% if empty_list %}
+            <p class="text"> Você não possui nenhuma disciplina cadastrada. <a class="header-normal normal-link" href="{% url 'add_course' %}">Adicione uma disciplina.</a></p>
+            <br>
+        {% endif %}
         {% for course in courses %}
-            <div>
-                <a href="{% url 'course_overview' course.code %}" class='{{course.rating}}'>
-                    {{course.title}} | {{course.code}} | {{course.comments}} mensagens
+            <div class="list-row">
+                <span class='{{course.rating}}'></span>
+                <a class="course-link" href="{% url 'course_overview' course.code %}">
+                    <span class="course-title header-normal black">{{course.title}}</span>
+                    <span class="course-code text pink">{{course.code}}</span>
+                    <span class="course-comments text black">{{course.comments}} mensage{{ course.plural|yesno:"ns,m" }}</span>
                 </a>
-                <button @click="removeModal('{{ course.title }}', '{{ course.code }}')">Excluir</button>
+                <span class="course-delete" @click="removeModal('{{ course.title }}', '{{ course.code }}')">&times;</span>
             </div>
         {% endfor %}
         <div v-if="showModal" class="modal-mask">
-            <transition name="modal">
-                <div class="modal-wrapper">
-                    <div class="modal-container">
-
-                        <div class="modal-header">
-                            <slot name="header">
-                                default header
-                            </slot>
-                            <button class="modal-default-button" @click="closeModal">
-                                x
-                            </button>
-                        </div>
-
-                        <div class="modal-body">
-                            <slot name="body">
-                                [[courseToBeRemoved.title]]
-                            </slot>
-                        </div>
-
-                        <div class="modal-footer">
-                            <slot name="footer">
-                                default footer
-                                <button class="modal-default-button" @click=removeCourse()>
-                                    OK
-                                </button>
-                            </slot>
-                        </div>
-                    </div>
+            <div class="modal-wrapper" @click="closeModal"></div>
+            <div class="modal-container">
+                <div class="modal-header">
+                    <span class="modal-close" @click="closeModal">&times;</span>
                 </div>
-            </transition>
+
+                <div class="modal-body">
+                    <slot name="body">
+                        <img src="{% static 'img/delete.svg' %}" alt="Lata de lixo.">
+                        <p class="title purple">Excluir disciplina</p>
+                        <p class="text">Tem certeza que deseja excluir a disciplina <span class="header-normal">[[courseToBeRemoved.title]]</span>?</p>
+                    </slot>
+                </div>
+
+                <div class="modal-footer">
+                    <slot name="footer">
+                        <button class="secondary-button" @click="closeModal">
+                            Cancelar
+                        </button>
+                        <button class="primary-button" @click=removeCourse()>
+                            Excluir
+                        </button>
+                    </slot>
+                </div>
+            </div>
         </div>
     </div>
+</div>
 {% endblock %}
 
 {% block scripts %}

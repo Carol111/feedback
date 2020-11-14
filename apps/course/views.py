@@ -13,16 +13,18 @@ import json
 @login_required
 def list_course(request):
     courses = Course.objects.filter(user=request.user).order_by('title').values()
+    empty_list = not bool(courses.count())
 
     for course in courses:
         comments = Comment.objects.filter(course__code=course['code'])
         course['comments'] = comments.count()
+        course['plural'] = course['comments'] != 1
         positive_comments = comments.filter(rating='positive').count()
         negative_comments = comments.filter(rating='negative').count()
         course_rating = 'positive' if positive_comments >= negative_comments else 'negative'
         course['rating'] = course_rating
 
-    return render(request, 'course/list.html', {'courses':courses})
+    return render(request, 'course/list.html', {'courses':courses, 'empty_list':empty_list})
 
 @login_required
 def add_course(request):
@@ -30,7 +32,6 @@ def add_course(request):
 
     if request.method == 'POST':
         form = CourseForm(request.POST)
-        print (form)
 
         if form.is_valid():
             new_course = Course(
