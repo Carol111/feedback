@@ -1,15 +1,35 @@
 {% extends 'core/loggedArea.html' %}
+{% load static %}
 
 {% block content %}
-    <p class="title"><b>{{course.title}} | {{course.code}}</b></p>
-
-    <a href="{% url 'course_overview' course.code %}">Visão Geral</a>
-    <a href="{% url 'course_messages' course.code %}">+Mensagens+</a>
-
-    {% for comment in comments %}
-        <div class='{{comment.rating}}'>
-            {{comment.text}} | {{comment.date}}
+    <div class="section-header">
+        <p class="title white">{{course.title}} <span class="text" style="margin-left: 20px;">( {{course.code}} )</span></p>
+        <div class="section-menu">
+            <ul>
+                <li class="header-big white menu-text"><a href="{% url 'course_overview' course.code %}">Visão Geral</a></li>
+                <li class="header-big white menu-text active"><a href="{% url 'course_messages' course.code %}">Mensagens</a></li>
+            </ul>
         </div>
-	{% endfor %}
+    </div>
+    <div class="section-content">
+        {% if empty_list %}
+            <p class="text"> Esta disciplina ainda não recebeu nenhum comentário. Peça para seus alunos comentarem utilizando o código <span class="header-normal pink">{{course.code}}</span>.</p>
+            <br>
+        {% endif %}
+        {% for comment in comments %}
+            <div class="list-row">
+                <span class="{{comment.rating}}"></span>
+                <div class="comments">
+                    {% if comment.rating == 'positive' %}
+                        <div><img src="{% static 'img/positive.svg' %}" alt="Positivo"></div>
+                    {% else %}
+                        <div><img src="{% static 'img/negative.svg' %}" alt="Negativo"></div>
+                    {% endif %}
+                    <div class="comment-text text">{{comment.text}}</div>
+                    <div class="comment-date text">{{comment.date}}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 
 {% endblock %}

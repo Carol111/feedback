@@ -20,7 +20,7 @@ from django.contrib.auth import views
 from apps.core.views import home, about
 from apps.userprofile.views import register, settings
 from apps.period.views import add_period, list_period
-from apps.course.views import add_course, list_course, course_overview, course_messages, course_frequent_words
+from apps.course.views import add_course, list_course, course_overview, course_messages
 from apps.course.api import api_date_range, api_remove_course
 
 urlpatterns = [
@@ -37,7 +37,6 @@ urlpatterns = [
     path('course/list', list_course, name='list_course'),
     path('course/<slug:course_code>/overview/', course_overview, name='course_overview'),
     path('course/<slug:course_code>/messages/', course_messages, name='course_messages'),
-    path('course/<slug:course_code>/frequent-words/', course_frequent_words, name='course_frequent_words'),
 
     # API
     path('api/date_range/', api_date_range, name='api_date_range'),

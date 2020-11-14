@@ -2,39 +2,45 @@
 
 {% block content %}
 <div id="overview">
-    <p class="title"><b>{{course.title}} | {{course.code}}</b></p>
-
-    <a href="{% url 'course_overview' course.code %}">+Visão Geral+</a>
-    <a href="{% url 'course_messages' course.code %}">Mensagens</a>
-
-    <div>
-        <p>Avaliação Geral</p>
-        <div style="width:10%;">
-            <canvas id="generalRatings"></canvas>
+    <div class="section-header">
+        <p class="title white">{{course.title}} <span class="text" style="margin-left: 20px;">( {{course.code}} )</span></p>
+        <div class="section-menu">
+            <ul>
+                <li class="header-big white menu-text active"><a href="{% url 'course_overview' course.code %}">Visão Geral</a></li>
+                <li class="header-big white menu-text"><a href="{% url 'course_messages' course.code %}">Mensagens</a></li>
+            </ul>
         </div>
-        {{count_positive_comments}} Positivos
-        <br>
-        {{count_negative_comments}} Negativos
     </div>
-
-    <div>
-        <p>Intervalo de tempo</p>
-        <input type="text" name="dateRange" value="{{date_range}}"/>
+    <div class="section-content">
         <div>
-            <span id="positiveCommentsByRange">{{count_positive_comments}}</span> Positivos
+            <p>Avaliação Geral</p>
+            <div style="width:10%;">
+                <canvas id="generalRatings"></canvas>
+            </div>
+            {{count_positive_comments}} Positivos
             <br>
-            <span id="negativeCommentsByRange">{{count_negative_comments}}</span> Negativos
+            {{count_negative_comments}} Negativos
         </div>
-    </div>
 
-    <div>
-        <p>Palavras frequentes</p>
-        <div id="chartdiv" style="width:40%;"></div>
-    </div>
+        <div>
+            <p>Intervalo de tempo</p>
+            <input type="text" name="dateRange" value="{{date_range}}"/>
+            <div>
+                <span id="positiveCommentsByRange">{{count_positive_comments}}</span> Positivos
+                <br>
+                <span id="negativeCommentsByRange">{{count_negative_comments}}</span> Negativos
+            </div>
+        </div>
 
-    <div style="width:40%;">
-        <p>Avaliações ao longo do tempo</p>
-        <canvas id="ratingsByDate"></canvas>
+        <div>
+            <p>Palavras frequentes</p>
+            <div id="chartdiv" style="width:40%;"></div>
+        </div>
+
+        <div style="width:40%;">
+            <p>Avaliações ao longo do tempo</p>
+            <canvas id="ratingsByDate"></canvas>
+        </div>
     </div>
 </div>
 {% endblock %}
