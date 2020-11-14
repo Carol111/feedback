@@ -7,9 +7,7 @@
 
         <form method="POST" action="">
             {% csrf_token %}
-            <div class="course-code">
-                <input type="text" class="input" name="course" id="id_course" v-model="course" autofocus placeholder="Insira o código da disciplina" required>
-            </div>
+            <input type="text" class="input" name="course" id="id_course" v-model="course" autofocus placeholder="Insira o código da disciplina" required>
             <div class="comment">
                 <textarea type="text" class="input large-input" name="text" id="id_text" v-model="text" placeholder="Deixe a sua mensagem anonimamente..." maxlength="200" cols="40" rows="5" required></textarea>
                 <svg
