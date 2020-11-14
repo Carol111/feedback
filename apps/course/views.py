@@ -98,11 +98,10 @@ def course_overview(request, course_code):
 def course_messages(request, course_code):
     course = Course.objects.get(code=course_code)
     comments = Comment.objects.filter(course__code=course_code)
+    empty_list = not bool(comments.count())
 
-    return render(request, 'course/messages.html', {'course':course, 'comments':comments})
+    for comment in comments:
+        comment.date = comment.date.strftime("%d/%m/%Y")
 
-@login_required
-def course_frequent_words(request, course_code):
-    course = Course.objects.get(code=course_code)
+    return render(request, 'course/messages.html', {'course':course, 'comments':comments, 'empty_list':empty_list})
 
-    return render(request, 'course/frequent-words.html', {'course':course})
