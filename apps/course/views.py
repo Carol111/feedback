@@ -76,10 +76,20 @@ def course_overview(request, course_code):
     for comment in comments:
         frequent_words += ' ' + comment.text.lower()
 
+    total_positive_percentage = 0
+    total_negative_percentage = 0
+
+    if comments.count() != 0:
+        total_positive_percentage = round((count_positive_comments/comments.count())*100,1)
+        total_negative_percentage = round((count_negative_comments/comments.count())*100,1)
+
     context = {
         'course': course,
         'count_positive_comments': count_positive_comments,
         'count_negative_comments': count_negative_comments,
+        'total_comments': comments.count(),
+        'total_positive_percentage': total_positive_percentage,
+        'total_negative_percentage': total_negative_percentage,
         'date_range': date_range,
         'linear_dataset': {
             'linear_label': json.dumps(linear_label),

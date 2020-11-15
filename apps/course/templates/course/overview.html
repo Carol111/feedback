@@ -3,7 +3,7 @@
 {% block content %}
 <div id="overview">
     <div class="section-header">
-        <p class="title white">{{course.title}} <span class="text" style="margin-left: 20px;">( {{course.code}} )</span></p>
+        <p class="title white">{{course.title}} <span class="header-normal" style="margin-left: 20px;">( {{course.code}} )</span></p>
         <div class="section-menu">
             <ul>
                 <li class="header-big white menu-text active"><a href="{% url 'course_overview' course.code %}">Visão Geral</a></li>
@@ -11,155 +11,184 @@
             </ul>
         </div>
     </div>
-    <div class="section-content">
-        <div>
-            <p>Avaliação Geral</p>
-            <div style="width:10%;">
-                <canvas id="generalRatings"></canvas>
+    <div class="overview-content">
+        <div class="overview-left">
+            <div class="card-box">
+                <p class="header-normal">Avaliação Geral <span class="text dark-grey">- {{total_comments}} comentários</span></p>
+                <div class="general-rating">
+                    <div class="general-rating-chart">
+                        <canvas id="generalRatings"></canvas>
+                    </div>
+                    <div class="general-rating-count text">
+                        <span class="header-normal green">{{count_positive_comments}}</span> Positivos
+                        <br>
+                        <span class="header-normal red">{{count_negative_comments}}</span> Negativos
+                    </div>
+                </div>
             </div>
-            {{count_positive_comments}} Positivos
-            <br>
-            {{count_negative_comments}} Negativos
-        </div>
 
-        <div>
-            <p>Intervalo de tempo</p>
-            <input type="text" name="dateRange" value="{{date_range}}"/>
-            <div>
-                <span id="positiveCommentsByRange">{{count_positive_comments}}</span> Positivos
-                <br>
-                <span id="negativeCommentsByRange">{{count_negative_comments}}</span> Negativos
+            <div class="card-box interval-rating">
+                <p class="header-normal">Intervalo de tempo</p>
+                <input type="text" name="dateRange" value="{{date_range}}"/>
+                <div class="text">
+                    <span id="positiveCommentsByRange" class="header-normal green">{{count_positive_comments}}</span> Positivos <span id="positivePercentage" class="text dark-grey">- {{total_positive_percentage}}%</span>
+                    <div class="meter">
+                        <span id="positiveBar" class="positive-bar" :style="positivePercentage"></span>
+                    </div>
+                    <br>
+                    <span id="negativeCommentsByRange" class="header-normal red">{{count_negative_comments}}</span> Negativos <span id="negativePercentage" class="text dark-grey">- {{total_negative_percentage}}%</span>
+                    <div class="meter">
+                        <span id="negativeBar" class="negative-bar" :style="negativePercentage"></span>
+                    </div>
+                </div>
             </div>
         </div>
+        <div class="overview-right">
+            <div class="card-box frequent-words">
+                <p class="header-normal">Palavras frequentes</p>
+                <div id="chartdiv" style="display: block; width: 700px; height: 150px"></div>
+            </div>
 
-        <div>
-            <p>Palavras frequentes</p>
-            <div id="chartdiv" style="width:40%;"></div>
-        </div>
-
-        <div style="width:40%;">
-            <p>Avaliações ao longo do tempo</p>
-            <canvas id="ratingsByDate"></canvas>
+            <div class="card-box rating-chart">
+                <p class="header-normal">Avaliações ao longo do tempo</p>
+                <canvas id="ratingsByDate" style="display: block; width: 700px; height: 150px"></canvas>
+            </div>
         </div>
     </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
-    <script>
-        $(function() {
-            $('input[name="dateRange"]').daterangepicker({
-                locale: {
-                    format: 'DD/MM/YYYY'
-                }
-            }, function(start, end, label) {
-                var data = {
-                    'course_code': '{{course.code}}',
-                    'start_date': start.format('YYYY-MM-DD'),
-                    'end_date': end.format('YYYY-MM-DD')
-                };
-
-                fetch('/api/date_range/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    },
-                    credentials: 'same-origin',
-                    body: JSON.stringify(data)
-                })
-                .then(response => response.json())
-                .then((responseData) => {
-                    document.getElementById("positiveCommentsByRange").innerHTML = responseData.positive_comments_by_range
-                    document.getElementById("negativeCommentsByRange").innerHTML = responseData.negative_comments_by_range
-                })
-            });
-        });
-
-        var generalRatingsChart = document.getElementById('generalRatings').getContext('2d');
-        var doughnutChart = new Chart(generalRatingsChart, {
-            type: 'doughnut',
-            data: {
-                labels: '',
-                datasets: [
-                    {
-                        label: '',
-                        backgroundColor: ['rgb(26, 202, 160)','rgb(241, 64, 64)'],
-                        data: ['{{count_positive_comments}}', '{{count_negative_comments}}'],
-                    }
-                ]
-            },
-            options: {
-                tooltips: {
-                    enabled: false
-                }
+<script>
+    var overview = new Vue({
+        el: '#overview',
+        delimiters: ['[[', ']]'],
+        data () {
+            return {
+                positivePercentage: "width: {{ total_positive_percentage }}%;",
+                negativePercentage: "width: {{ total_negative_percentage }}%;"
             }
-        });
+        }
+    });
 
-        var ratingsByDateChart = document.getElementById('ratingsByDate').getContext('2d');
-        var linearChart = new Chart(ratingsByDateChart, {
-            type: 'line',
-            data: {
-                labels: JSON.parse("{{linear_dataset.linear_label|escapejs}}"),
-                datasets: [
-                    {
-                        label: 'Positivos',
-                        backgroundColor: 'rgb(26, 202, 160)',
-                        borderColor: 'rgb(26, 202, 160)',
-                        data: JSON.parse("{{linear_dataset.linear_positive_series|escapejs}}"),
-                        fill: false
-                    },
-                    {
-                        label: 'Negativos',
-                        backgroundColor: 'rgb(241, 64, 64)',
-                        borderColor: 'rgb(241, 64, 64)',
-                        data: JSON.parse("{{linear_dataset.linear_negative_series|escapejs}}"),
-                        fill: false
-                    }
-                ]
-            },
-            options: {
-                tooltips: {
-                    mode: 'index',
-                    intersect: false
+    $(function() {
+        $('input[name="dateRange"]').daterangepicker({
+            locale: {
+                format: 'DD/MM/YYYY'
+            }
+        }, function(start, end, label) {
+            var data = {
+                'course_code': '{{course.code}}',
+                'start_date': start.format('YYYY-MM-DD'),
+                'end_date': end.format('YYYY-MM-DD')
+            };
+
+            fetch('/api/date_range/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
                 },
-                hover: {
-                    mode: 'nearest',
-                    intersect: true
+                credentials: 'same-origin',
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then((responseData) => {
+                document.getElementById("positiveCommentsByRange").innerHTML = responseData.positive_comments_by_range
+                document.getElementById("positiveBar").style.width = responseData.positive_percentage_by_range + '%'
+                document.getElementById("positivePercentage").innerHTML = '- ' + responseData.positive_percentage_by_range + '%'
+
+                document.getElementById("negativeCommentsByRange").innerHTML = responseData.negative_comments_by_range
+                document.getElementById("negativeBar").style.width = responseData.negative_percentage_by_range + '%'
+                document.getElementById("negativePercentage").innerHTML = '- ' + responseData.negative_percentage_by_range + '%'
+            })
+        });
+    });
+
+    var generalRatingsChart = document.getElementById('generalRatings').getContext('2d');
+    var doughnutChart = new Chart(generalRatingsChart, {
+        type: 'doughnut',
+        data: {
+            labels: '',
+            datasets: [
+                {
+                    label: '',
+                    backgroundColor: ['rgb(26, 202, 160)','rgb(241, 64, 64)'],
+                    data: ['{{count_positive_comments}}', '{{count_negative_comments}}'],
                 }
+            ]
+        },
+        options: {
+            tooltips: {
+                enabled: false
             }
-        });
+        }
+    });
 
-        am4core.ready(function() {
-            am4core.useTheme(am4themes_frozen);
+    var ratingsByDateChart = document.getElementById('ratingsByDate').getContext('2d');
+    var linearChart = new Chart(ratingsByDateChart, {
+        type: 'line',
+        data: {
+            labels: JSON.parse("{{linear_dataset.linear_label|escapejs}}"),
+            datasets: [
+                {
+                    label: 'Positivos',
+                    backgroundColor: 'rgb(26, 202, 160)',
+                    borderColor: 'rgb(26, 202, 160)',
+                    data: JSON.parse("{{linear_dataset.linear_positive_series|escapejs}}"),
+                    fill: false
+                },
+                {
+                    label: 'Negativos',
+                    backgroundColor: 'rgb(241, 64, 64)',
+                    borderColor: 'rgb(241, 64, 64)',
+                    data: JSON.parse("{{linear_dataset.linear_negative_series|escapejs}}"),
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            tooltips: {
+                mode: 'index',
+                intersect: false
+            },
+            hover: {
+                mode: 'nearest',
+                intersect: true
+            },
+            legend: {
+                display: false
+            }
+        }
+    });
 
-            var chart = am4core.create("chartdiv", am4plugins_wordCloud.WordCloud);
-            var series = chart.series.push(new am4plugins_wordCloud.WordCloudSeries());
+    am4core.ready(function() {
+        am4core.useTheme(am4themes_frozen);
 
-            console.log(JSON.parse("{{word_cloud_dataset.stopwords|escapejs}}"));
+        var chart = am4core.create("chartdiv", am4plugins_wordCloud.WordCloud);
+        var series = chart.series.push(new am4plugins_wordCloud.WordCloudSeries());
 
-            series.accuracy = 4;
-            series.step = 15;
-            series.rotationThreshold = 0.7;
-            series.maxCount = 80;
-            series.minWordLength = 2;
-            series.labels.template.margin(4,4,4,4);
-            series.maxFontSize = am4core.percent(30);
+        console.log(JSON.parse("{{word_cloud_dataset.stopwords|escapejs}}"));
 
-            series.text = "{{word_cloud_dataset.frequent_words|escapejs}}";
-            series.excludeWords = JSON.parse("{{word_cloud_dataset.stopwords|escapejs}}");
+        series.accuracy = 4;
+        series.step = 15;
+        series.rotationThreshold = 0.7;
+        series.maxCount = 80;
+        series.minWordLength = 2;
+        series.labels.template.margin(4,4,4,4);
+        series.minFontSize = am4core.percent(8);
+        series.maxFontSize = am4core.percent(30);
 
-            series.colors = new am4core.ColorSet();
-            series.colors.passOptions = {};
+        series.text = "{{word_cloud_dataset.frequent_words|escapejs}}";
+        series.excludeWords = JSON.parse("{{word_cloud_dataset.stopwords|escapejs}}");
 
-            series.labels.template.tooltipText = "{word}: {value}";
+        series.colors = new am4core.ColorSet();
+        series.colors.passOptions = {};
 
-            series.angles = [0,-90];
-            series.fontWeight = "700"
+        series.labels.template.tooltipText = "{word}: {value}";
 
-            setInterval(function () {
-                series.dataItems.getIndex(Math.round(Math.random() * (series.dataItems.length - 1))).setValue("value", Math.round(Math.random() * 10));
-            }, 10000)
-        });
-    </script>
+        series.angles = [0,-90];
+        series.fontWeight = "700"
+    });
+</script>
 {% endblock %}
