@@ -837,3 +837,108 @@ body {
 .negative-bar {
     background-color: #F14040;
 }
+
+/* ----------- Progress bar ----------- */
+
+.register-header {
+    margin: 155px 0 30px 0;
+    width: 50%
+}
+
+.register-form input {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 20px 0;
+    padding: 12px 20px;
+    border: 2px solid #455CC7;
+    border-radius: 5px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    outline: none;
+}
+
+.register-form input:focus {
+    border: 2px solid #FC6596;
+}
+
+@media screen and (max-width: 800px) {
+    .register-header {
+        width: 100%
+    }
+}
+
+/* ----------- 404 ----------- */
+
+.big-title {
+    font-size: 50px;
+    font-weight: 700;
+    margin-left: 80px;
+}
+
+.big-text {
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.not-found a {
+    box-sizing: border-box;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    padding: 12px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 12px;
+    margin: 30px 0 4px 130px;
+    min-width: 130px;
+    display: inline-block;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-family: 'Montserrat', sans-serif;
+    outline: none;
+    border: 1px solid #455CC7;
+    color: #455CC7;
+}
+
+.not-found a:hover {
+    background-color: #455CC7;
+    color: #FFFFFF;
+}
+
+.not-found-img {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+
+.not-found-logo {
+    position: fixed;
+    top: -60px;
+    left: 50%;
+}
+
+.not-found-logo img {
+    height: 200px;
+    transform: rotate(70deg);
+}
+
+.not-found-title {
+    position: fixed;
+    bottom: 200px;
+    right: -250px;
+}
+
+.not-found-title img{
+    height: 100px;
+    transform: rotate(-85deg);
+}
+
+.not-found-content {
+    width: 400px;
+    position: fixed;
+    right: 100px;
+    top: 120px;
+    z-index: 2;
+}
