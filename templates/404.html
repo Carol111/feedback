@@ -1,5 +1,35 @@
-<h1>Diga-me de onde veio e te direi para onde voltar</h1>
+{% load static %}
 
-<p>A página que você procura pode ter sido removida, alterada ou estar indisponível</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Feedback</title>
+    <link rel="shortcut icon" href="{% static 'img/logo.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="not-found">
+        <div class="not-found-content">
+            <p class="big-title purple">404</p>
 
-<a href="{% url 'home' %}">voltar para o início</a>
+            <p class="big-text">. . . . A página que você procura pode ter sido removida, alterada ou estar indisponível.</p>
+
+            <a href="{% url 'home' %}">voltar para o início</a>
+        </div>
+
+        <div class="not-found-img">
+            <img src="{% static 'img/404.svg' %}" alt="Página não encontrada">
+        </div>
+        <div class="not-found-logo">
+            <img src="{% static 'img/logo.svg' %}" alt="Logo">
+        </div>
+        <div class="not-found-title">
+            <img src="{% static 'img/title.svg' %}" alt="Feedback">
+        </div>
+    </div>
+</body>
+</html>
