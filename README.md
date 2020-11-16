@@ -7,7 +7,7 @@
 
 
   <p align="center">
-    Projeto desenvolvido para o TCC em Eng. de COmputação na UNIVASF
+    Projeto desenvolvido para o TCC em Eng. de Computação na UNIVASF
     <br />
     <a href="https://feedback-web.herokuapp.com/">Visualizar aplicação</a>
   </p>
