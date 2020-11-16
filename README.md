@@ -31,7 +31,7 @@
 
 
 
-### Installation
+### Instalação
 
 1. Clone o repositório
 ```sh
