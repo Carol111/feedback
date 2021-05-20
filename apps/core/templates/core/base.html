@@ -20,7 +20,7 @@
                     <a href="{% url 'home' %}"><img src="{% static 'img/menu_logo.svg' %}" alt="Feedback Logo"></a>
                     <div class="menu-item">
                         <ul>
-                            <li><a href="{% url 'about' %}">Sobre</a></li>
+                            <!-- <li><a href="{% url 'about' %}">Sobre</a></li> -->
                             {% if request.user.is_authenticated %}
                                 <li><a href="{% url 'list_course' %}">Área do Professor</a></li>
                             {% else %}
